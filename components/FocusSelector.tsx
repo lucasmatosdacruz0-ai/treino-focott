@@ -1,5 +1,6 @@
 
 
+
 import React from 'react';
 import { DumbbellIcon, ZapIcon, TargetIcon, StarIcon } from './icons.tsx';
 
@@ -11,7 +12,8 @@ interface FocusSelectorProps {
 const focusOptions: {
     focus: string;
     description: string;
-    icon: JSX.Element;
+    // Fix: Changed JSX.Element to React.ReactNode to resolve namespace issue.
+    icon: React.ReactNode;
     recommended?: boolean;
 }[] = [
     { focus: 'Corpo Inteiro', description: 'Trabalha todos os principais grupos musculares.', icon: <ZapIcon className="w-10 h-10 mb-2"/>, recommended: true },

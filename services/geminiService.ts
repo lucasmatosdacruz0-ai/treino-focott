@@ -16,11 +16,20 @@ const getAiClient = (): GoogleGenAI => {
         return ai;
     }
     
-    // This check is now safe because it's inside a function call, not at the module's top level.
-    if (typeof process === 'undefined' || !process.env || !process.env.API_KEY) {
-        throw new Error("A chave de API do Google Gemini não está configurada no ambiente. O administrador do aplicativo precisa definir a variável de ambiente API_KEY.");
+    // A chave de API é lida de `process.env`, que é populado pelo `config.ts`.
+    // Esta verificação garante que a chave não seja o valor de placeholder.
+    const apiKey = process.env.API_KEY;
+    if (typeof process === 'undefined' || !process.env || !apiKey || apiKey.startsWith('COLE_SUA_CHAVE_API_GEMINI_AQUI')) {
+        throw new Error("A chave de API do Google Gemini não está configurada. Verifique o arquivo `config.ts` (para desenvolvimento local) ou as variáveis de ambiente (para produção).");
     }
     
+    // NOTA DE SEGURANÇA PARA PRODUÇÃO:
+    // Expor a chave de API do Gemini no lado do cliente (navegador) não é recomendado
+    // para aplicações em produção, pois pode ser extraída e usada indevidamente.
+    // A melhor prática é criar uma função serverless (por exemplo, no Vercel ou Netlify)
+    // que atue como um proxy. O frontend chamaria essa função, e a função (no servidor)
+    // faria a chamada segura para a API do Gemini, mantendo a chave de API secreta.
+    // Para este projeto, mantemos a chamada no cliente para simplicidade.
     ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     return ai;
 };

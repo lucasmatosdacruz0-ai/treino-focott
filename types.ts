@@ -1,3 +1,5 @@
+import React from 'react';
+
 export enum FitnessLevel {
   Beginner = 'Iniciante',
   Intermediate = 'Intermediário',
@@ -133,6 +135,7 @@ export interface Achievement {
     id:string;
     title: string;
     description: string;
+    // Fix: Import React to use React.ComponentType.
     icon: React.ComponentType<{ className?: string }>;
     unlocked: boolean;
     isSecret: boolean;
